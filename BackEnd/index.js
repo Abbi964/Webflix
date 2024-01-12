@@ -27,6 +27,7 @@ app.get('/',(req,res)=>{
 
 // redirecting to routes
 app.use('/auth',authRoute);
+app.use('/user',userRoute);
 
 
 // listening on port 3000    
