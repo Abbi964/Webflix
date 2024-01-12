@@ -80,3 +80,38 @@ exports.findAllUsers = async(req,res)=>{
         res.status(500).json({msg : 'Some error happened'})
     }
 }
+
+
+exports.getUserStat = async (req,res)=>{
+    try{
+        const today = new Date();
+        const lastYear = today.setFullYear(today.getFullYear - 1);
+    
+        const monthsArray = [
+            "January","Febuary","March","April","May","July",
+            "August","September","October","November","December"
+        ]
+
+        let data = await User.aggregate([
+            {
+                $project : {
+                    month : {$month : "$createdAt"}
+                }
+            },
+            {
+                $group : {
+                    _id : "$month",
+                    total : {$sum : 1}
+                }
+            }
+        ])
+
+        res.status(200).json({data})
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({msg : "Something went wrong"})
+    }
+
+
+}

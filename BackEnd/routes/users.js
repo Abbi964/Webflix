@@ -11,5 +11,6 @@ router.get('/find/:id',userController.findUser)
 // Get All User
 router.get('/findAll',verifyToken,userController.findAllUsers)
 // Get User Stats
+router.get('/stats',userController.getUserStat)
 
 module.exports = router;

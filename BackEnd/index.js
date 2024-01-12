@@ -28,6 +28,7 @@ app.get('/',(req,res)=>{
 // redirecting to routes
 app.use('/auth',authRoute);
 app.use('/user',userRoute);
+app.use('/movie',movieRoute);
 
 
 // listening on port 3000    
