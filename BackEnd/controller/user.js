@@ -46,3 +46,37 @@ exports.deleteUser = async(req,res)=>{
         res.status(500).json({msg : 'Some error happened'})
     }
 }
+
+
+exports.findUser = async(req,res)=>{
+    try{
+        let user = await User.findById(req.params.id)
+        const {password, ...otherData} = user._doc
+        res.status(201).json({user : otherData});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({msg : 'Some error happened'})
+    }
+}
+
+exports.findAllUsers = async(req,res)=>{
+    try{
+        let onlyNew = req.query.new;
+        // checking if user is Admin
+        if (req.user.isAdmin){
+
+            // finding users based on query (in desc order of _id)
+            let users = onlyNew ? await User.find().sort({_id : -1}).limit(10) : await User.find()
+
+            res.status(201).json({users})
+        }
+        else{
+            res.status(401).json({msg : "You are not Autherized"})
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({msg : 'Some error happened'})
+    }
+}

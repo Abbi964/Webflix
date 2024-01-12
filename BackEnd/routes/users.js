@@ -7,7 +7,9 @@ router.put('/:id',verifyToken,userController.updateUser)
 // Delete
 router.delete('/:id',verifyToken,userController.deleteUser)
 // Get User
+router.get('/find/:id',userController.findUser)
 // Get All User
+router.get('/findAll',verifyToken,userController.findAllUsers)
 // Get User Stats
 
 module.exports = router;
