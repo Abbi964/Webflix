@@ -29,6 +29,7 @@ app.get('/',(req,res)=>{
 app.use('/auth',authRoute);
 app.use('/user',userRoute);
 app.use('/movie',movieRoute);
+app.use('/list',listRoute);
 
 
 // listening on port 3000    
