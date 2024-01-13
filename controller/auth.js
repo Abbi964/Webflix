@@ -1,6 +1,12 @@
 const User = require('../model/user');
 const CryptoJS = require('crypto-js');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const path = require('path')
+
+exports.getRegister = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','login-register.html'))
+}
+
 
 exports.postRegister = async(req,res,next)=>{
     try{

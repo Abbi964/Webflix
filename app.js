@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const path = require('path');
+
 const express = require('express');
 const app = express();
 
@@ -10,6 +12,9 @@ const userRoute = require('./routes/users');
 const listRoute = require('./routes/lists');
 const movieRoute = require('./routes/movies');
 const authRoute = require('./routes/auth');
+
+// Making 'public' folder static
+app.use(express.static(path.join(__dirname,'public')));
 
 // using Body Parser
 const bodyParser = require('body-parser');
@@ -34,5 +39,5 @@ app.use('/list',listRoute);
 
 // listening on port 3000    
 app.listen(3000,()=>{
-    console.log('Backend Server is running')
+    console.log('Backend Server is running on port 3000')
 })
