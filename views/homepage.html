@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/homepage.css">
+    <title>WebFlix</title>
+</head>
+<body>
+    <!--  Nav-Bar      -->
+    <nav class="nav" id="nav">
+        <img src="/media/Webflix-logo-3.png" alt="logo" class="nav_logo"/>
+        <a href="/movie/create">Create</a>
+        <img src="/media/Webflix-avatar.png" alt="avatar" class="nav_avatar"/>
+    </nav>
+    <!--  Big Banner   -->
+    <div class="banner">
+        <div class="banner_contents">
+            <h1 class="banner_title">Money Heist</h1>
+            <div class="banner_buttons">
+                <button class="banner_button">Play</button>
+                <button class="banner_button">My List</button>
+            </div>
+            <div class="banner_description">
+                To carry out the biggest heist in histry 4 theivs do a heist
+            </div>
+        </div>
+        <div class="banner_fadeBottom"></div>
+    </div>
+    <!--------   Lists          ---------------------->
+    <div id="lists" class="lists">
+        <div id="latest-movies" class="row">
+            <h2>LATEST MOVIES</h2>
+            <div class="row_posters">
+
+            </div>
+        </div>
+        <div id="latest-webSeries" class="row">
+            <h2>LATEST WEB SERIES</h2>
+            <div class="row_posters">
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const nav = document.getElementById('nav')
+        nav.addEventListener('scroll',()=>{
+            if (window.scrollY >= 100){
+                nav.classList.add('nav_black')
+            }
+            else{
+                nav.classList.remove('nav_black')
+            }
+        })
+    </script>
+</body>
+</html>

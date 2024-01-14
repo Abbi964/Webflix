@@ -1,4 +1,14 @@
 const Movie = require('../model/movie');
+const path = require('path')
+
+exports.getHomePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','homepage.html'))
+}
+
+
+exports.getCreateMoviePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','create-movie.html'))
+}
 
 exports.createMovie = async(req,res)=>{
     try{

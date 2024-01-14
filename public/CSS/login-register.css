@@ -5,6 +5,29 @@
 	box-sizing: border-box;
 }
 
+/* ------------- navbar related ----------------- */
+.navbar {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 3% 5%;
+	z-index: 10;
+}
+  
+.navbar__brand {
+	width: 100px;
+	height: 100%;
+}
+  
+.brand__logo {
+	width: 100%;
+	height: 100%;
+}
+
+/*------------------------------- */
+
 body {
 	/* background: #f6f5f7; */
 	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/media/Netflix\ Background\ Edited.jpg');

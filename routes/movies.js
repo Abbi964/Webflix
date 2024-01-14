@@ -2,6 +2,10 @@ const router = require('express').Router();
 const movieController = require('../controller/movie');
 const verifyToken = require('../utility/verifyToken')
 
+// Get Home page
+router.get('/home',movieController.getHomePage);
+// get Create movie
+router.get('/create',movieController.getCreateMoviePage)
 // Create
 router.post('/create',verifyToken,movieController.createMovie);
 // Update
