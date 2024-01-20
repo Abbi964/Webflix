@@ -15,7 +15,7 @@ router.delete('/delete/:id',verifyToken,movieController.deleteMovie);
 // Find
 router.get('/find/:id',verifyToken,movieController.findMovie);
 // Find random movie
-router.get('/random',verifyToken,movieController.findRandomMovie);
+router.get('/random',verifyToken,movieController.findRandomMovies);
 // Get all movies
 router.get('/findAll',verifyToken,movieController.findAllMovies);
 

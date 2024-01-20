@@ -83,26 +83,32 @@ exports.findMovie = async(req,res)=>{
 }
 
 
-exports.findRandomMovie = async(req,res)=>{
+exports.findRandomMovies = async(req,res)=>{
     try{
         let type = req.query.type;
+        let amount = req.query.amount;
 
-        let movie;
-        // sending movie ir series based on type
+        let movies;
+        // sending movie or series based on type
         if (type === 'series'){
-            movie = await Movie.aggregate([
+            movies = await Movie.aggregate([
                 {$match : {isSeries : true}},
-                {$sample : {size : 1}}
+                {$sample : {size : +amount}}
+            ])
+        }
+        else if (type === 'movie'){
+            movies = await Movie.aggregate([
+                {$match : {isSeries : false}},
+                {$sample : {size : +amount}}
             ])
         }
         else{
-            movie = await Movie.aggregate([
-                {$match : {isSeries : false}},
-                {$sample : {size : 1}}
+            movies = await Movie.aggregate([
+                {$sample : {size : +amount}}
             ])
         }
 
-        res.status(200).json({movie})
+        res.status(200).json({movies})
     }
     catch(err){
         console.log(err);

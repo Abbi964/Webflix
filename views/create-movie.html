@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebFlix-Admin</title>
+</head>
+<body>
+    <form action="">
+        <input id="title" type="text" placeholder="title"><br>
+        <input id="desc" type="text" placeholder="desc"><br>
+        <input id="img" type="text" placeholder="img"><br>
+        <input id="video" type="text" placeholder="video"><br>
+        <input id="year" type="text" placeholder="year"><br>
+        <input id="limit" type="number" placeholder="limit"><br>
+        <!-- <input id="genre" type="text" placeholder="genre"><br> -->
+        <!-- <input type="checkbox" name="isSearies" id="isSeries" value="true"><br> -->
+        <button id="submit" type="submit">Create</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const title = document.getElementById('title')
+        const desc = document.getElementById('desc')
+        const img = document.getElementById('img')
+        const video = document.getElementById('video')
+        const year = document.getElementById('year')
+        const limit = document.getElementById('limit')
+        //const genre = document.getElementById('genre')
+        const isSeries = document.getElementById('isSeries')
+        const submitBtn = document.getElementById('submit')
+
+        
+        submitBtn.addEventListener('click',async(e)=>{
+            e.preventDefault()
+            try{
+                let obj = {
+                    title : title.value,
+                    desc : desc.value,
+                    img : img.value,
+                    video : video.value,
+                    year : year.value,
+                    limit : limit.value,
+                    genre : 'action',
+                    isSeries : true
+                }
+
+                let token = localStorage.getItem('token')
+                let response = await axios.post('http://localhost:3000/movie/create',obj,{headers:  {Authorization : token}})
+
+                title.value = '';
+                desc.value = '';
+                img.value = '';
+                video.value = '';
+                year.value = '';
+                limit.value = ''
+                if (response.data.movie){
+                    console.log(response.data.movie)
+
+                }
+                else{
+                    console.log(response.data.msg)
+                }
+
+            }
+            catch(err){
+                console.log(err)
+            }
+        })
+
+    </script>
+</body>
+</html>

@@ -8,30 +8,6 @@ body{
     background-color: #111;
 }
 
-.nav{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    z-index: 1;
-    transition-timing-function: ease-in;
-    transition: all 0.5s;
-}
-.nav_black{
-    background-color: #111;
-}
-
-.nav_logo{
-    width: 120px;
-    object-fit: contain;
-}
-.nav_avatar{
-    width: 30px;
-    object-fit: contain;
-}
-
 
 .banner{
     background-image: url(/media/banner.jpg);
@@ -103,18 +79,20 @@ body{
     padding: 20px;
 }
 .row_posters::-webkit-scrollbar{
-    display: none;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
 }
 
-.row_poster{
+
+.row_poster{ 
     width: 100%;
     object-fit: contain;
-    max-height: 100px;
+    max-height: 300px;
     margin-right: 10px;
     transition: transform 450ms;
 }
 .row_poster:hover{
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 .row_poster_large{
@@ -123,3 +101,4 @@ body{
 .row_poster_large:hover{
     transform: scale(1.09);
 }
+
