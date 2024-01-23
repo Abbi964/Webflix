@@ -1,4 +1,9 @@
 const List = require('../model/list');
+const path = require('path')
+
+exports.getCreateListPage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','create-list.html'))
+}
 
 exports.createList = async(req,res)=>{
     try{
@@ -40,39 +45,50 @@ exports.deleteList = async(req,res)=>{
 }
 
 
-exports.getLists = async (req,res)=>{
-    try{
+exports.getLists = async (req, res) => {
+    try {
         let typeQuery = req.query.type;
         let genreQuery = req.query.genre;
         let lists = [];
 
-        if(typeQuery){
-            if(genreQuery){
-                // A perticular genre is selected
-                lists = await List.aggregate([
-                    {$sample : {size : 10}},
-                    {$match : {type : typeQuery, genre : genreQuery}}
-                ])
+        // initiating a pipeline 'filter' for aggrigation later
+        let pipeline = [
+            { $sample: { size: 10 } }
+        ];
+
+        if (typeQuery !== 'all') {
+            if (genreQuery) {
+                // A particular genre is selected
+                pipeline.push(
+                    // adding match filter into pipeline
+                    { $match: { type: typeQuery, genre: genreQuery } }
+                );
+            } else {
+                pipeline.push(
+                    { $match: { type: typeQuery } }
+                );
             }
-            else{
-                lists = await List.aggregate([
-                    {$sample : {size : 10}},
-                    {$match : {type : typeQuery}}
-                ]) 
-            }
-        }
-        else{
-            // we are in homepage
-            lists = await List.aggregate([
-                {$sample : {size : 10}}
-            ])
         }
 
+        // Adding $lookup stage to populate 'content' field with 'Movie' documents
+        pipeline.push(
+            {
+                $lookup: {
+                    from: 'movies', 
+                    localField: 'content',
+                    foreignField: '_id',
+                    as: 'contentDetails'
+                }
+            }
+        );
+
+        // Execute the aggregation
+        lists = await List.aggregate(pipeline);
+
         // sending lists
-        res.status(200).json({lists})
-    }
-    catch(err){
+        res.status(200).json({ lists });
+    } catch (err) {
         console.log(err);
-        res.status(500).json({msg : "Something went wrong"})
+        res.status(500).json({ msg: "Something went wrong" });
     }
 }

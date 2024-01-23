@@ -3,17 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
     <title>WebFlix-Admin</title>
 </head>
 <body>
     <form action="">
+        <label for="title">title</label><br>
         <input id="title" type="text" placeholder="title"><br>
+        <label for="description">description</label><br>
         <input id="desc" type="text" placeholder="desc"><br>
+        <label for="image">image</label><br>
         <input id="img" type="text" placeholder="img"><br>
+        <label for="video">video</label><br>
         <input id="video" type="text" placeholder="video"><br>
+        <label for="year">year</label><br>
         <input id="year" type="text" placeholder="year"><br>
+        <label for="genre">genre</label><br>
+        <select name="genre" id="genre">
+            <option value="action">action</option>
+            <option value="drama">drama</option>
+            <option value="si-fi">si-fi</option>
+            <option value="comedy">comedy</option>
+            <option value="horror">horror</option>
+            <option value="fantasy">fantasy</option>
+            <option value="mystery">mystery</option>
+        </select><br>
+        <label for="limit">limit</label><br>
         <input id="limit" type="number" placeholder="limit"><br>
-        <!-- <input id="genre" type="text" placeholder="genre"><br> -->
+        <label for="banner">banner</label><br>
+        <input id="banner" type="text" placeholder="banner"><br>
         <!-- <input type="checkbox" name="isSearies" id="isSeries" value="true"><br> -->
         <button id="submit" type="submit">Create</button>
     </form>
@@ -26,7 +44,8 @@
         const video = document.getElementById('video')
         const year = document.getElementById('year')
         const limit = document.getElementById('limit')
-        //const genre = document.getElementById('genre')
+        const genre = document.getElementById('genre')
+        const banner = document.getElementById('banner')
         const isSeries = document.getElementById('isSeries')
         const submitBtn = document.getElementById('submit')
 
@@ -40,8 +59,9 @@
                     img : img.value,
                     video : video.value,
                     year : year.value,
+                    banner : banner.value,
                     limit : limit.value,
-                    genre : 'action',
+                    genre : genre.value,
                     isSeries : true
                 }
 
@@ -53,7 +73,8 @@
                 img.value = '';
                 video.value = '';
                 year.value = '';
-                limit.value = ''
+                limit.value = '';
+                banner.value = '';
                 if (response.data.movie){
                     console.log(response.data.movie)
 

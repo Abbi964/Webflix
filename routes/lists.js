@@ -2,6 +2,8 @@ const router = require('express').Router();
 const listController = require('../controller/list');
 const verifyToken = require('../utility/verifyToken')
 
+// Get create-list page
+router.get('/create',listController.getCreateListPage)
 // Create
 router.post('/create',verifyToken,listController.createList);
 // Delete

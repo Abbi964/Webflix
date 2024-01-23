@@ -10,7 +10,6 @@ body{
 
 
 .banner{
-    background-image: url(/media/banner.jpg);
     background-size: cover;
     background-position: center center;
     color: white;
@@ -75,7 +74,7 @@ body{
 .row_posters{
     display: flex;
     overflow-y: hidden;
-    overflow-x: scroll;
+    overflow-x: hidden;
     padding: 20px;
 }
 .row_posters::-webkit-scrollbar{
