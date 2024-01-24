@@ -12,6 +12,7 @@ const userRoute = require('./routes/users');
 const listRoute = require('./routes/lists');
 const movieRoute = require('./routes/movies');
 const authRoute = require('./routes/auth');
+const adminRoute = require('./routes/admin');
 
 // Making 'public' folder static
 app.use(express.static(path.join(__dirname,'public')));
@@ -35,6 +36,7 @@ app.use('/auth',authRoute);
 app.use('/user',userRoute);
 app.use('/movie',movieRoute);
 app.use('/list',listRoute);
+app.use('/admin',adminRoute);
 
 
 // listening on port 3000    

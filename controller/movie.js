@@ -30,6 +30,9 @@ exports.createMovie = async(req,res)=>{
     }
 }
 
+exports.getUpdateMoviePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','update-movie.html'))
+}
 
 exports.updateMovie = async(req,res)=>{
     try{
@@ -60,7 +63,7 @@ exports.deleteMovie = async(req,res)=>{
             res.status(200).json({msg : "Movie has been deleted...."})
         }
         else{
-            res.json({msg : "You are not authorized"})
+            res.status(401).json({msg : "You are not authorized"})
         }
     }
     catch(err){

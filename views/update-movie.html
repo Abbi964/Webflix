@@ -53,7 +53,7 @@
             <label for="isSeries">Is Series</label>
             <input type="checkbox" name="isSearies" id="isSeries" value="true"><br>
         </div>
-        <button class="submitBtn" id="submit" type="submit">Create</button>
+        <button class="submitBtn" id="submit" type="submit">Update</button>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -69,6 +69,26 @@
         const isSeries = document.getElementById('isSeries')
         const submitBtn = document.getElementById('submit')
 
+        let movieId;
+        // loading movie details 
+        window.addEventListener('DOMContentLoaded',async(e)=>{
+            try{
+                // getting movieID from localStorage
+                movieId = localStorage.getItem('editId')
+    
+                // getting movie info 
+                let token = localStorage.getItem('token')
+                let response = await axios.get(`http://localhost:3000/movie/find/${movieId}`,{headers:  {Authorization : token}})
+
+                // filling inputs with movieInfo
+                fillInputsWithMovieInfo(response.data.movie)
+            }
+            catch(err){
+                console.log(err)
+            }
+            
+        })
+        
         submitBtn.addEventListener('click',async(e)=>{
             e.preventDefault()
             try{
@@ -85,18 +105,12 @@
                 }
 
                 let token = localStorage.getItem('token')
-                let response = await axios.post('http://localhost:3000/movie/create',obj,{headers:  {Authorization : token}})
+                let response = await axios.put(`http://localhost:3000/movie/update/${movieId}`,obj,{headers:  {Authorization : token}})
 
-                title.value = '';
-                desc.value = '';
-                img.value = '';
-                video.value = '';
-                year.value = '';
-                limit.value = '';
-                banner.value = '';
-                if (response.data.movie){
-                    console.log(response.data.movie)
-
+                if (response.data.updatedMovie){
+                    // going to allmovie page
+                    localStorage.setItem('selected','all_movies')
+                    window.parent.location.reload()
                 }
                 else{
                     console.log(response.data.msg)
@@ -107,6 +121,21 @@
                 console.log(err)
             }
         })
+
+        //-------------------------------------------------------------------------//
+
+        function fillInputsWithMovieInfo(movie){
+            title.value = movie.title;
+            desc.value = movie.desc;
+            img.value = movie.img;
+            video.value = movie.video;
+            year.value = movie.year;
+            limit.value = movie.limit;
+            banner.value = movie.banner;
+            genre.value = movie.genre;
+
+            if(movie.isSeries){isSeries.checked = true}
+        }
 
     </script>
 </body>

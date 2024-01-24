@@ -4,10 +4,12 @@ const verifyToken = require('../utility/verifyToken')
 
 // Get Home page
 router.get('/home',movieController.getHomePage);
-// get Create movie
+// get Create movie Page
 router.get('/create',movieController.getCreateMoviePage)
 // Create
 router.post('/create',verifyToken,movieController.createMovie);
+// Get Update Movie Page
+router.get('/update/',movieController.getUpdateMoviePage)
 // Update
 router.put('/update/:id',verifyToken,movieController.updateMovie);
 // Delete

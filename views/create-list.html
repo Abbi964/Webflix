@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/create-list.css">
     <title>WebFlix-Admin</title>
 </head>
 <body>
-    <form action="">
+    <form class="form-class" action="">
         <label for="title">title</label><br>
-        <input id="title" type="text" placeholder="title"><br> 
+        <input class="form-input" id="title" type="text" placeholder="title"><br> 
         <label for="type">type</label><br>
-        <select name="type" id="type">
+        <select class="form-input" name="type" id="type">
             <option value="movie">movie</option>
             <option value="series">series</option>
         </select><br> 
         <label for="genre">genre</label><br>
-        <select name="genre" id="genre">
+        <select class="form-input" name="genre" id="genre">
             <option value="action">action</option>
             <option value="drama">drama</option>
             <option value="si-fi">si-fi</option>
@@ -26,15 +27,15 @@
             <option value="mystery">mystery</option>
         </select><br>
         <label for="movie_1">Movies / Series</label><br>
-        <input id="movie_1" type="text" placeholder="movie/series 1"><br> 
-        <input id="movie_2" type="text" placeholder="movie/series 2"><br> 
-        <input id="movie_3" type="text" placeholder="movie/series 3"><br> 
-        <input id="movie_4" type="text" placeholder="movie/series 4"><br> 
-        <input id="movie_5" type="text" placeholder="movie/series 5"><br> 
-        <input id="movie_6" type="text" placeholder="movie/series 6"><br> 
-        <input id="movie_7" type="text" placeholder="movie/series 7"><br> 
-        <input id="movie_8" type="text" placeholder="movie/series 8"><br> 
-        <button id="submit" type="submit">Create</button>
+        <input class="form-input" id="movie_1" type="text" placeholder="movie/series 1"> 
+        <input class="form-input" id="movie_2" type="text" placeholder="movie/series 2"> 
+        <input class="form-input" id="movie_3" type="text" placeholder="movie/series 3"> 
+        <input class="form-input" id="movie_4" type="text" placeholder="movie/series 4"> 
+        <input class="form-input" id="movie_5" type="text" placeholder="movie/series 5"> 
+        <input class="form-input" id="movie_6" type="text" placeholder="movie/series 6"> 
+        <input class="form-input" id="movie_7" type="text" placeholder="movie/series 7"> 
+        <input class="form-input" id="movie_8" type="text" placeholder="movie/series 8"> 
+        <button class="submitBtn" id="submit" type="submit">Create</button>
     </form>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

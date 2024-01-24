@@ -8,6 +8,8 @@ router.get('/create',listController.getCreateListPage)
 router.post('/create',verifyToken,listController.createList);
 // Delete
 router.delete('/delete/:id',verifyToken,listController.deleteList);
+// Get All Lists
+router.get('/all',verifyToken,listController.getAllLists);
 // Get Lists
 router.get('/',listController.getLists);
 

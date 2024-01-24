@@ -45,6 +45,23 @@ exports.deleteList = async(req,res)=>{
 }
 
 
+exports.getAllLists = async(req,res)=>{
+    try{
+        if(req.user.isAdmin){
+            let lists = await List.find()
+            res.status(200).json({lists})
+        }
+        else{
+            res.status(401).json({msg : "You are not autherized"})
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({msg : "Something Went Wrong"})
+    }
+}
+
+
 exports.getLists = async (req, res) => {
     try {
         let typeQuery = req.query.type;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/adminDashboard.css">
     <title>Admin Dashboard</title>
 </head>
 <body>
@@ -11,10 +12,40 @@
     <nav class="nav" id="nav">
         <div class="nav_subdiv">
             <img src="/media/Webflix-logo-3.png" alt="logo" class="nav_logo"/>
-            <h2>Admin DashBoard</h2>
+            <h2>Admin Dashboard</h2>
         </div>
         <img src="/media/Webflix-avatar.png" alt="avatar" class="nav_avatar"/>
     </nav>
     
+    <!-- ---------main div --------->
+    <div id="main" class="main">
+        <div id="options"  class="options">
+            <ul id="users_ul" class="users_ul">
+                <h3>Users</h3>
+                <li id="all_users" class="options_li">All Users</li>
+                <li id="update_user" class="options_li">Update User</li>
+            </ul>
+            <ul id="movies_ul" class="movies_ul">
+                <h3>Movies / Series</h3>
+                <li id="all_movies" class="options_li">All Movies/Series</li>
+                <li id="create_movie" class="options_li">Create Movie/Series</li>
+                <li id="update_movie" class="options_li">Update Movies/Series</li>
+            </ul>
+            <ul id="list_ul" class="list_ul">
+                <h3>Lists</h3>
+                <li id="all_lists" class="options_li">All Lists</li>
+                <li id="create_list" class="options_li">Create List</li>
+                <li id="update_list" class="options_li">Update List</li>
+            </ul>
+        </div>
+        <div class="content" id="content">
+            
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/JS/adminDashboard.js"></script>
 </body>
 </html>
+
+
