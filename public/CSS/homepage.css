@@ -14,7 +14,8 @@ body{
     background-position: center center;
     color: white;
     object-fit: contain;
-    height: 445px;
+    /* height: 445px; */
+    height: 520px;
 }
 
 .banner_contents{
@@ -59,8 +60,10 @@ body{
 }
 
 .banner_fadeBottom{
-    margin-top: 145px;
-    height: 7.4rem;
+    /* margin-top: 145px;
+    height: 7.4rem; */
+    margin-top: 200px;
+    height: 130px;
     background-image: linear-gradient(180deg, transparent, rgba(37,37,37,0.61),#111);
 }
 
@@ -68,7 +71,8 @@ body{
 
 .row{
     color: white;
-    margin-left: 20px
+    margin-left: 20px;
+    height: 350px;
 }
 
 .row_posters{
@@ -86,7 +90,7 @@ body{
 .row_poster{ 
     width: 100%;
     object-fit: contain;
-    max-height: 300px;
+    height: 280px;
     margin-right: 10px;
     transition: transform 450ms;
 }
@@ -110,5 +114,9 @@ body{
     background-color: #1a1919;
     border: 1px solid #ccc;
     padding: 10px;
+}
+
+.movieImg{
+    height: 259px;
 }
 

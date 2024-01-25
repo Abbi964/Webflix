@@ -5,6 +5,7 @@ const bannerTitle = document.querySelector('.banner_title');
 const bannerDesc = document.querySelector('.banner_description');
 const rowDiv_lists = document.getElementById('lists')
 const floatingDiv = document.getElementById('floatingDiv')
+const bannerPlayBtn = document.getElementById('banner_play')
 
 // Making a variable to check home, movie, series which one is selected
 let selectedPage = localStorage.getItem('selectedPage') ? localStorage.getItem('selectedPage') : 'home'
@@ -72,6 +73,11 @@ rowDiv_lists.addEventListener('click',(e)=>{
         // redirecting to view movie page
         window.location.href = `/movie/view/${e.target.parentElement.id}`
     }
+})
+//---------- adding eventlistner for clicking play btn on banner----------------//
+bannerPlayBtn.addEventListener('click',(e)=>{
+     // redirecting to view movie page
+     window.location.href = `/movie/view/${e.target.parentElement.parentElement.parentElement.id}`
 })
 
 
@@ -191,6 +197,7 @@ function fillLists(lists){
 
 
 function fillBanner(movie){
+    banner.id = movie._id;
     bannerTitle.innerHTML = movie.title;
     bannerDesc.innerHTML = movie.desc;
     banner.style.backgroundImage = `url(${movie.banner})`
