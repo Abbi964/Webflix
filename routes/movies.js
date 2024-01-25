@@ -20,5 +20,7 @@ router.get('/find/:id',verifyToken,movieController.findMovie);
 router.get('/random',verifyToken,movieController.findRandomMovies);
 // Get all movies
 router.get('/findAll',verifyToken,movieController.findAllMovies);
+// view movie
+router.get('/view/:id',movieController.getViewMoviePage)
 
 module.exports = router;

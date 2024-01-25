@@ -45,10 +45,34 @@ exports.deleteList = async(req,res)=>{
 }
 
 
+exports.getUpdateListPage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','update-list.html'))
+}
+
+exports.updateList = async(req,res)=>{
+    try{
+        // checking if user is admin or not
+        if (req.user.isAdmin){
+            let updatedList = await List.findByIdAndUpdate(req.params.id,req.body,{new : true});
+            // "new : true" insures that new updated list is returned and not the old one 
+
+            res.status(200).json({updatedList})
+        }
+        else{
+            res.json({msg : "You are not authorized"})
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({msg : "Something went wrong"})
+    }
+}
+
+
 exports.getAllLists = async(req,res)=>{
     try{
         if(req.user.isAdmin){
-            let lists = await List.find()
+            let lists = await List.find().populate('content')
             res.status(200).json({lists})
         }
         else{
@@ -58,6 +82,18 @@ exports.getAllLists = async(req,res)=>{
     catch(err){
         console.log(err)
         res.status(500).json({msg : "Something Went Wrong"})
+    }
+}
+
+exports.findList = async(req,res)=>{
+    try{
+        let list = await List.findById(req.params.id);
+
+        res.status(200).json({list})
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({msg : "Something went wrong"})
     }
 }
 

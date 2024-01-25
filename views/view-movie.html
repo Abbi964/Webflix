@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <title>Webflix</title>
+    <style>
+        body{
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="iframeDiv">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        window.addEventListener('DOMContentLoaded',async(e)=>{
+            try{
+                // getting movieId from url
+                let url_arr = window.location.href.split('/')
+                let movieId = url_arr[url_arr.length - 1]
+        
+                // finding movie
+                let token = localStorage.getItem('token')
+                let response = await axios.get(`http://localhost:3000/movie/find/${movieId}`,{headers:  {Authorization : token}})
+    
+                if(response.data.movie){
+                    // making a youtube iframe
+                    let iframeDiv = document.getElementById('iframeDiv')
+
+                    // first converting youtube url to youtube-embeded url
+                    let embeded_url = convertToEmbededUrl(response.data.movie.video)
+
+                    iframeDiv.innerHTML = `<iframe style="width: 90vw;height: 44vw" width="729" height="410" src="${embeded_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+                    
+                }
+
+            }
+            catch(err){
+                console.log(err)
+            }
+
+        })
+
+
+        //-----------------------------------------------------------------------//
+        function convertToEmbededUrl(url){
+            let embd_url = 'https://www.youtube.com/embed/'
+            let first_step = url.split('=')[1];
+            let secont_step = first_step.split('&')[0];
+
+            embd_url += secont_step;
+            return(embd_url)
+        }
+    </script>
+</body>
+</html>

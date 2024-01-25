@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/create-list.css">
+    <title>WebFlix-Admin</title>
+</head>
+<body>
+    <form class="form-class" action="">
+        <div>
+            <label for="username">Username</label><br>
+            <input class="form-input" id="username" type="text" placeholder="username">
+        </div>
+        <div>
+            <label for="email">Email</label><br>
+            <input class="form-input" id="email" type="text" placeholder="email">
+        </div>
+        <div>    
+            <label for="profilePic">ProfilePic</label><br>
+            <input class="form-input" id="profilePic" type="text" placeholder="ProfilePic">
+        </div>
+        <div>
+            <label for="isAdmin">Is Admin</label>
+            <input type="checkbox" name="isAdmin" id="isAdmin"><br>
+        </div>
+        <button class="submitBtn" id="submit" type="submit">Update</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const username = document.getElementById('username')
+        const email = document.getElementById('email')
+        const profilePic = document.getElementById('profilePic')
+        const isAdmin = document.getElementById('isAdmin')
+        const submitBtn = document.getElementById('submit')
+
+        let userId;
+        // loading user details 
+        window.addEventListener('DOMContentLoaded',async(e)=>{
+            try{
+                // getting userID from localStorage
+                userId = localStorage.getItem('editId')
+    
+                // getting user info 
+                let token = localStorage.getItem('token')
+                let response = await axios.get(`http://localhost:3000/user/find/${userId}`,{headers:  {Authorization : token}})
+
+                // filling inputs with userInfo
+                fillInputsWithUserInfo(response.data.user)
+            }
+            catch(err){
+                console.log(err)
+            }
+            
+        })
+        
+        submitBtn.addEventListener('click',async(e)=>{
+            e.preventDefault()
+            try{
+                let obj = {
+                    username : username.value,
+                    email : email.value,
+                    profilePic : profilePic.value,
+                    isAdmin : isAdmin.checked ? true : false
+                }
+
+                let token = localStorage.getItem('token')
+                let response = await axios.put(`http://localhost:3000/user/update/${userId}`,obj,{headers:  {Authorization : token}})
+
+                if (response.data.updatedUser){
+                    // going to alluser page
+                    localStorage.setItem('selected','all_users')
+                    window.parent.location.reload()
+                }
+                else{
+                    console.log(response.data.msg)
+                }
+
+            }
+            catch(err){
+                console.log(err)
+            }
+        })
+
+        //-------------------------------------------------------------------------//
+
+        function fillInputsWithUserInfo(user){
+            username.value = user.username;
+            email.value = user.email;
+            profilePic.value = user.profilePic;
+
+            if(user.isAdmin){isAdmin.checked = true}
+        }
+
+    </script>
+</body>
+</html>

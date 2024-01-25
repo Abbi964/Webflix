@@ -1,5 +1,11 @@
 const User = require('../model/user');
 const CryptoJS = require('crypto-js');
+const path = require('path')
+
+
+exports.getUserUpdatePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','update-user.html'))
+}
 
 exports.updateUser = async(req,res)=>{
     try{
@@ -51,6 +57,7 @@ exports.deleteUser = async(req,res)=>{
 exports.findUser = async(req,res)=>{
     try{
         let user = await User.findById(req.params.id)
+        console.log(user)
         const {password, ...otherData} = user._doc
         res.status(201).json({user : otherData});
     }

@@ -2,10 +2,12 @@ const router = require('express').Router();
 const userController = require('../controller/user')
 const verifyToken = require('../utility/verifyToken');
 
+// Get user update Page
+router.get('/update',userController.getUserUpdatePage)
 // Update
-router.put('/:id',verifyToken,userController.updateUser)
+router.put('/update/:id',verifyToken,userController.updateUser)
 // Delete
-router.delete('/:id',verifyToken,userController.deleteUser)
+router.delete('/delete/:id',verifyToken,userController.deleteUser)
 // Get User
 router.get('/find/:id',userController.findUser)
 // Get All User

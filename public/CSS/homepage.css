@@ -101,3 +101,14 @@ body{
     transform: scale(1.09);
 }
 
+/* floating div */
+.floatingDiv {
+    position: absolute;
+    display: none;
+    width: 150px;
+    color: white;
+    background-color: #1a1919;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+

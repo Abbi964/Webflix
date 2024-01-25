@@ -144,3 +144,31 @@ iframe{
 .editBtnMovie:hover{
     background-color: rgb(195, 195, 51);
 }
+
+.delBtnList{
+    background-color: rgb(241, 55, 55);
+    position: relative;
+    float: right;
+    bottom: 2em;
+    padding: 7px;
+    margin-left: 7px;
+    border-radius: 5px;
+    width: 3vw;
+}
+.delBtnList:hover {
+    background-color: rgb(191, 42, 42);
+}
+
+.editBtnList {
+    background-color: rgb(246, 246, 69);
+    position: relative;
+    float: right;
+    bottom: 2em;
+    padding: 7px;
+    margin-left: 7px;
+    border-radius: 5px;
+    width: 3vw;   
+}
+.editBtnList:hover{
+    background-color: rgb(195, 195, 51);
+}

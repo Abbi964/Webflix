@@ -4,7 +4,7 @@ const banner = document.querySelector('.banner');
 const bannerTitle = document.querySelector('.banner_title');
 const bannerDesc = document.querySelector('.banner_description');
 const rowDiv_lists = document.getElementById('lists')
-
+const floatingDiv = document.getElementById('floatingDiv')
 
 // Making a variable to check home, movie, series which one is selected
 let selectedPage = localStorage.getItem('selectedPage') ? localStorage.getItem('selectedPage') : 'home'
@@ -25,6 +25,20 @@ window.addEventListener('DOMContentLoaded',async(e)=>{
         let result = await axios.get(`http://localhost:3000/list?type=${type}`,{headers : {Authorization : token}})
         console.log(result.data.lists)
         fillLists(result.data.lists)
+
+        // checking if user is Admin, if yes then showing adminDashboard Button-------//
+        let nav_subdiv = document.querySelector('.nav_subdiv')
+
+        let resp = await axios.get('http://localhost:3000/admin/verify',{headers : {Authorization : token}})
+
+        if (resp.data.isAdmin){
+            let a = document.createElement('a');
+            a.href = '/admin/dashboard'
+            a.style.color = 'white'
+            a.style.textDecoration = 'none';
+            a.innerHTML = '<h3>Admin Dashboard</h3>'
+            nav_subdiv.appendChild(a)
+        }
     }
     catch(err){
         console.log(err)
@@ -50,17 +64,66 @@ nav.addEventListener('click',(e)=>{
     }
 })
 
+//---------- adding eventlistner for clicking on a movie/series----------------//
+rowDiv_lists.addEventListener('click',(e)=>{
+    // checking if a movie/series is clicked
+    if (e.target.className === 'movieImg'){
+        console.log('clicked')
+        // redirecting to view movie page
+        window.location.href = `/movie/view/${e.target.parentElement.id}`
+    }
+})
+
+
+//---------- adding eventlistners for hovering over a movie/series----------------//
+
+// when hoveringIn
+rowDiv_lists.addEventListener('mousemove',(e)=>{
+    // if hovering over an movie/series
+    if (e.target.className === 'movieImg'){
+        let movieDiv = e.target.parentElement;
+        // filling info in the floatingDiv
+        floatingDiv.innerHTML = `<h3>${movieDiv.getAttribute('data-title')}</h3><br>
+        <p>${movieDiv.getAttribute('data-desc')}</p>
+        <h4>Year - ${movieDiv.getAttribute('data-year')}</h4>
+        <h4>Age Limit - ${movieDiv.getAttribute('data-limit')}</h4>
+        <h4>Genre - ${movieDiv.getAttribute('data-genre')}</h4>`
+        // making it visible
+        floatingDiv.style.display = 'block';
+    }
+})
+// when hoveringOut
+rowDiv_lists.addEventListener('mouseout',(e)=>{
+    // if hovering over an movie/series
+    if (e.target.className === 'movieImg'){
+        floatingDiv.innerHTML = ''
+        floatingDiv.style.display = 'none';
+    }
+})
+// attaching floatingDiv to cursor
+document.addEventListener('mousemove', (e)=>{
+    // Updateing the position of the floatingDiv to follow the cursor
+    floatingDiv.style.left = (e.pageX) + 'px'; 
+    floatingDiv.style.top = (e.pageY + 10) + 'px';  
+});
 
 
 //----------------------------------------------------------------------------//
 function fillContentForYouRow(moviesArr){
     moviesArr.forEach((movie)=>{
-        // making a div element
+        // making a div element and also adding custom data
         let div = document.createElement('div')
-        div.className = 'row_poster'
+        div.className = 'row_poster';
+        div.id = movie._id;
+        div.setAttribute('data-title',movie.title)      // adding custom attributes
+        div.setAttribute('data-desc',movie.desc)
+        div.setAttribute('data-limit',movie.limit)
+        div.setAttribute('data-year',movie.year)
+        div.setAttribute('data-genre',movie.genre)
         // making a img element
         let image = document.createElement('img');
         image.src = movie.img
+        image.className = 'movieImg'
         // making a h3 
         let h4 = document.createElement('h4');
         h4.innerHTML = movie.title
@@ -89,12 +152,19 @@ function fillLists(lists){
         // ---------- making a row Poster for each movie of list contents -----------------------//
 
         list.contentDetails.forEach((movie)=>{
-            // making a div element
+            // making a div element and also adding custom attributes
             let div = document.createElement('div')
             div.className = 'row_poster'
+            div.id = movie._id;
+            div.setAttribute('data-title',movie.title)      // adding custom attributes
+            div.setAttribute('data-desc',movie.desc)
+            div.setAttribute('data-limit',movie.limit)
+            div.setAttribute('data-year',movie.year)
+            div.setAttribute('data-genre',movie.genre)
             // making a img element
             let image = document.createElement('img');
             image.src = movie.img
+            image.className = 'movieImg'
             // making a h3 
             let h4 = document.createElement('h4');
             h4.innerHTML = movie.title

@@ -133,3 +133,7 @@ exports.findAllMovies = async(req,res)=>{
         res.status(500).json({msg : "Something went wrong"})
     }
 }
+
+exports.getViewMoviePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','view-movie.html'))
+}

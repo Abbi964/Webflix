@@ -28,6 +28,9 @@ window.addEventListener('DOMContentLoaded',(e)=>{
         if (selected === 'all_users'){
             showAllUsers()
         }
+        else if (selected === 'update_user'){
+            showUpdateUserForm()
+        }
         else if (selected === 'all_movies'){
             showAllMovies()
         }
@@ -61,7 +64,8 @@ async function showAllUsers(){
         // first getting All the users
         let response = await axios.get('http://localhost:3000/user/findAll',{headers:  {Authorization : token}})
         // appending a userUL to contentDiv
-        let userUl = document.createElement('ul')
+        let userUl = document.createElement('ul');
+        userUl.id = 'user_ul'
         userUl.className = 'user_ul'
         contentDiv.appendChild(userUl)
 
@@ -91,11 +95,20 @@ async function showAllUsers(){
 
         // changing contendDiv style
         contentDiv.style.width = '75vw'
-
+        // adding eventlisteners
+        addUserEventListeners()
     }
     catch(err){
         console.log(err)
     }
+}
+
+function showUpdateUserForm(){
+    // making an iframe
+    let iframe = document.createElement('iframe')
+    iframe.src = 'http://localhost:3000/user/update'
+
+    contentDiv.appendChild(iframe)
 }
 
 async function showAllMovies(){
@@ -166,6 +179,60 @@ function showUpdateMovieForm(){
     contentDiv.appendChild(iframe)
 }
 
+async function showAllLists(){
+    try{
+        let token = localStorage.getItem('token')
+        // first getting All the Lists
+        let response = await axios.get('http://localhost:3000/list/all',{headers:  {Authorization : token}})
+        console.log(response)
+        // appending a listUl to contentDiv
+        let listsUl = document.createElement('ul')
+        listsUl.id = 'lists_ul'
+        listsUl.className = 'user_ul'
+        contentDiv.appendChild(listsUl)
+
+        response.data.lists.forEach((list)=>{
+            // making an listLi
+            let listLi = document.createElement('li');
+            listLi.id = list._id
+            listLi.className = 'user_li'
+            listLi.innerHTML = `<h3>${list.title}</h3>
+            <h4>Genre - ${list.genre},    Type - ${list.type}</h4><br>`
+            // adding movies from content arr
+            list.content.forEach((movie)=>{
+                let p = document.createElement('p')
+                p.innerText = `${movie.title}, =====> id(${movie._id})`
+                listLi.appendChild(p)
+            })
+
+            // appending a delete and edit btn on user_li
+            let editBtn = document.createElement('button');
+            editBtn.className = 'editBtnList'
+            editBtn.innerText = 'Edit'
+
+            let delBtn = document.createElement('button')
+            delBtn.className = 'delBtnList'
+            delBtn.innerText = 'Del'
+
+            listLi.appendChild(delBtn);
+            listLi.appendChild(editBtn);
+
+            // finally appending userLi to userUl
+            listsUl.appendChild(listLi)
+
+        })
+
+        // changing contendDiv style
+        contentDiv.style.width = '75vw'
+        // adding EventListeners on listUL
+        addListEventListeners()
+
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 function showCreateListForm(){
     // making an iframe
     let iframe = document.createElement('iframe')
@@ -174,7 +241,54 @@ function showCreateListForm(){
     contentDiv.appendChild(iframe)
 }
 
+
+function showUpdateListForm(){
+    // making an iframe
+    let iframe = document.createElement('iframe')
+    iframe.src = 'http://localhost:3000/list/update'
+
+    contentDiv.appendChild(iframe)
+}
+
 ///------------------------------------------------------------------------//
+
+function addUserEventListeners(){
+    try{
+        let userUl = document.getElementById('user_ul');
+    
+        userUl.addEventListener('click',async(e)=>{
+            // if delBtnUser is clicked
+            if (e.target.className === 'delBtn'){
+                // First conferming
+                let isConfermed = window.confirm('Are you sure you want to delete user');
+
+                if(isConfermed){
+                    // deleting movie from database
+                    let token = localStorage.getItem('token')
+                    let userId = e.target.parentElement.id
+                    console.log(userId)
+                    await axios.delete(`http://localhost:3000/user/delete/${userId}`,{headers:  {Authorization : token}})
+    
+                    // removing from UI
+                    e.target.parentElement.remove()
+                }
+            }
+            // if editBtnUser button is clicked
+            else if (e.target.className === 'editBtn'){
+                // changing selected and editID in localstorage
+                localStorage.setItem('editId',e.target.parentElement.id);
+                localStorage.setItem('selected','update_user')
+
+                window.location.reload()
+            }
+        })
+    }
+    catch(err){
+        console.log(err)
+    }
+
+}
+
 
 function addMovieEventListeners(){
     try{
@@ -213,3 +327,38 @@ function addMovieEventListeners(){
 
 }
 
+
+function addListEventListeners(){
+    try{
+        let listsUl = document.getElementById('lists_ul');
+        listsUl.addEventListener('click',async(e)=>{
+            // if delBtnList is clicked
+            if (e.target.className === 'delBtnList'){
+                // First conferming
+                let isConfermed = window.confirm('Are you sure you want to delete list');
+
+                if(isConfermed){
+                    // deleting list from database
+                    let token = localStorage.getItem('token')
+                    let listId = e.target.parentElement.id
+                    await axios.delete(`http://localhost:3000/list/delete/${listId}`,{headers:  {Authorization : token}})
+    
+                    // removing from UI
+                    e.target.parentElement.remove()
+                }
+            }
+            // if editBtnList button is clicked
+            else if (e.target.className === 'editBtnList'){
+                // changing selected and editID in localstorage
+                localStorage.setItem('editId',e.target.parentElement.id);
+                localStorage.setItem('selected','update_list')
+
+                window.location.reload()
+            }
+        })
+    }
+    catch(err){
+        console.log(err)
+    }
+
+}

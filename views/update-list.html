@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/media/Webflix-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/create-list.css">
+    <title>WebFlix-Admin</title>
+</head>
+<body>
+    <form class="form-class" action="">
+        <label for="title">title</label><br>
+        <input class="form-input" id="title" type="text" placeholder="title"><br> 
+        <label for="type">type</label><br>
+        <select class="form-input" name="type" id="type">
+            <option value="movie">movie</option>
+            <option value="series">series</option>
+        </select><br> 
+        <label for="genre">genre</label><br>
+        <select class="form-input" name="genre" id="genre">
+            <option value="action">action</option>
+            <option value="drama">drama</option>
+            <option value="si-fi">si-fi</option>
+            <option value="comedy">comedy</option>
+            <option value="horror">horror</option>
+            <option value="fantasy">fantasy</option>
+            <option value="mystery">mystery</option>
+        </select><br>
+        <label for="movie_1">Movies / Series</label><br>
+        <input class="form-input" id="movie_1" type="text" placeholder="movie/series 1"> 
+        <input class="form-input" id="movie_2" type="text" placeholder="movie/series 2"> 
+        <input class="form-input" id="movie_3" type="text" placeholder="movie/series 3"> 
+        <input class="form-input" id="movie_4" type="text" placeholder="movie/series 4"> 
+        <input class="form-input" id="movie_5" type="text" placeholder="movie/series 5"> 
+        <input class="form-input" id="movie_6" type="text" placeholder="movie/series 6"> 
+        <input class="form-input" id="movie_7" type="text" placeholder="movie/series 7"> 
+        <input class="form-input" id="movie_8" type="text" placeholder="movie/series 8"> 
+        <button class="submitBtn" id="submit" type="submit">Update</button>
+    </form>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const title = document.getElementById('title')
+        const genre = document.getElementById('genre')
+        const type = document.getElementById('type')
+        const submitBtn = document.getElementById('submit')
+        
+        // all the movie inputs
+        const movie_1 = document.getElementById('movie_1');
+        const movie_2 = document.getElementById('movie_2');
+        const movie_3 = document.getElementById('movie_3');
+        const movie_4 = document.getElementById('movie_4');
+        const movie_5 = document.getElementById('movie_5');
+        const movie_6 = document.getElementById('movie_6');
+        const movie_7 = document.getElementById('movie_7');
+        const movie_8 = document.getElementById('movie_8');
+
+        let listId;
+        // loading movie details 
+        window.addEventListener('DOMContentLoaded',async(e)=>{
+            try{
+                // getting listId from localStorage
+                listId = localStorage.getItem('editId')
+    
+                // getting movie info 
+                let token = localStorage.getItem('token')
+                let response = await axios.get(`http://localhost:3000/list/find/${listId}`,{headers:  {Authorization : token}})
+
+                // filling inputs with listInfo
+                fillInputsWithListInfo(response.data.list)
+            }
+            catch(err){
+                console.log(err)
+            }
+            
+        })
+
+
+        submitBtn.addEventListener('click', async(e)=>{
+            e.preventDefault();
+            try{
+                // first converting movies into an array
+                let movies_arr = [movie_1.value,movie_2.value,movie_3.value,movie_4.value,movie_5.value,movie_6.value,movie_7.value,movie_8.value]
+                
+                let obj = {
+                    title : title.value,
+                    genre : genre.value,
+                    type : type.value,
+                    content : movies_arr,
+                }
+                
+                let token = localStorage.getItem('token')
+
+                let response = await axios.put(`http://localhost:3000/list/update/${listId}`,obj,{headers:  {Authorization : token}})
+
+                if (response.data.updatedList){
+                    // going to alllist page
+                    localStorage.setItem('selected','all_lists')
+                    window.parent.location.reload()
+                }
+                else{
+                    console.log(response.data.msg)
+                }
+            }
+            catch(err){
+                console.log(err)
+            }
+        })
+
+        //-----------------------------------------------------------------//
+
+        function fillInputsWithListInfo(list){
+            title.value = list.title;
+            genre.value = list.genre;
+            type.value = list.type;
+            movie_1.value = list.content[0];
+            movie_2.value = list.content[1];
+            movie_3.value = list.content[2];
+            movie_4.value = list.content[3];
+            movie_5.value = list.content[4];
+            movie_6.value = list.content[5];
+            movie_7.value = list.content[6];
+            movie_8.value = list.content[7];
+        }
+    </script>
+</body>
+</html>
