@@ -1,5 +1,5 @@
 const User = require('../model/user');
-const CryptoJS = require('crypto-js');
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const path = require('path')
 
@@ -10,15 +10,34 @@ exports.getRegister = (req,res)=>{
 
 exports.postRegister = async(req,res,next)=>{
     try{
-        const newUser = new User({
-            username : req.body.username,
-            email : req.body.email,
-            password : CryptoJS.AES.encrypt(req.body.password,process.env.CRYPTOJS_KEY).toString(),
-        });
+        // first checking if user already exists or not
+        let result = await User.findOne({
+            $or : [{username : req.body.username},{email : req.body.email}]
+        })
+        console.log(result)
+        if (result){
+            res.json({msg : "User already exists"})
+        }
+        else{
+            // hashing the password and creating new user
+            bcrypt.hash(req.body.password,10,async(err,hash)=>{
+                if(err){
+                    res.json({msg : "Something went wrong"})
+                }
+                else{
+                    const newUser = new User({
+                        username : req.body.username,
+                        email : req.body.email,
+                        password : hash,
 
-        let user = await newUser.save();
-        res.status(201).json({user})
-    }
+                    });
+                    let user = await newUser.save();
+                    res.status(201).json({user})
+                }
+            })
+        }
+    
+        }
     catch(err){
         console.log(err)
         res.status(500).json({msg : err})
@@ -34,21 +53,26 @@ exports.postLogin = async(req,res)=>{
         if (!user){
             res.status(401).json({msg : 'User not found'})
         }
-
-        // decripting password to check if it matches
-        let bytes  = CryptoJS.AES.decrypt(user.password, process.env.CRYPTOJS_KEY);
-        let originalText = bytes.toString(CryptoJS.enc.Utf8);
-        if (originalText != req.body.password){
-            res.status(401).json({msg : 'Password is not correct'})
-        }
         else{
-            // sending jwt with id and admin info
-            let accessToken = jwt.sign({id : user._id, isAdmin : user.isAdmin},process.env.JWT_KEY)
-    
-            const {password , ...otherdata} = user._doc
-    
-            res.status(201).json({user : otherdata,accessToken})
+            // comparing password to check if it matches
+            bcrypt.compare(req.body.password,user.password,(err,same)=>{
+                if(err){
+                    res.json({msg : 'Something went wrong'})
+                }
+                else if(same){
+                    // sending jwt with id and admin info
+                    let accessToken = jwt.sign({id : user._id, isAdmin : user.isAdmin},process.env.JWT_KEY)
+            
+                    const {password , ...otherdata} = user._doc
+            
+                    res.status(201).json({user : otherdata,accessToken})
+                }
+                else{
+                    res.status(401).json({msg : 'Password is not correct'})
+                }
+            })
         }
+
     }
     catch(err){
         console.log(err)

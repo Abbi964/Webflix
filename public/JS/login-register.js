@@ -46,9 +46,9 @@ signupSubmitBtn.addEventListener('click',async(e)=>{
 			}
 	
 			// posting 
-			let user = await axios.post("http://localhost:3000/auth/register",obj)
+			let response = await axios.post("http://localhost:3000/auth/register",obj)
 	
-			if (user){
+			if (response.data.user){
 				// clearing the inputs
 				signupName.value = '',
 				signupEmail.value = '',
@@ -59,7 +59,7 @@ signupSubmitBtn.addEventListener('click',async(e)=>{
 				setTimeout(()=>signupAlert.innerHTML = '',1000)
 			}
 			else{
-				signupAlert.innerHTML = 'Something Went wrong...'
+				signupAlert.innerHTML = response.data.msg
 				setTimeout(()=>signupAlert.innerHTML = '',1000)
 			}
 		}
