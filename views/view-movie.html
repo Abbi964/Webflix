@@ -33,9 +33,9 @@
                     let iframeDiv = document.getElementById('iframeDiv')
 
                     // first converting youtube url to youtube-embeded url
-                    let embeded_url = convertToEmbededUrl(response.data.movie.video)
+                    //let embeded_url = convertToEmbededUrl(response.data.movie.video)
 
-                    iframeDiv.innerHTML = `<iframe style="width: 90vw;height: 44vw" width="729" height="410" src="${embeded_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+                    iframeDiv.innerHTML = `<iframe style="width: 100%;height: 100vh" width="729" height="410" src="http://${response.data.movie.video}"></iframe>`
                     
                 }
 

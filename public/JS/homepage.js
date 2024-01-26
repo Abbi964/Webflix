@@ -71,6 +71,7 @@ rowDiv_lists.addEventListener('click',(e)=>{
     if (e.target.className === 'movieImg'){
         console.log('clicked')
         // redirecting to view movie page
+        // window.location.href = `http://${e.target.parentElement.getAttribute('data-video')}` 
         window.location.href = `/movie/view/${e.target.parentElement.id}`
     }
 })
@@ -126,6 +127,7 @@ function fillContentForYouRow(moviesArr){
         div.setAttribute('data-limit',movie.limit)
         div.setAttribute('data-year',movie.year)
         div.setAttribute('data-genre',movie.genre)
+        div.setAttribute('data-video',movie.video)
         // making a img element
         let image = document.createElement('img');
         image.src = movie.img
@@ -167,6 +169,7 @@ function fillLists(lists){
             div.setAttribute('data-limit',movie.limit)
             div.setAttribute('data-year',movie.year)
             div.setAttribute('data-genre',movie.genre)
+            div.setAttribute('data-video',movie.video)
             // making a img element
             let image = document.createElement('img');
             image.src = movie.img

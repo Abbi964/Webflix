@@ -130,7 +130,7 @@ async function showAllMovies(){
             movieLi.innerHTML = `<h3>${movie.title}</h3>
             <p>${movie.desc}</p>
             <a href="${movie.img}"><h4>Image Link</h4></a>
-            <a href="${movie.video}"><h4>Video Link</h4></a>
+            <a href= "https://${movie.video}"><h4>Video Link</h4></a>
             <a href="${movie.banner}"><h4>Banner Link</h4></a>
             <h4>Year - ${movie.year} --- Age Limit - ${movie.limit}</h4>
             <h4>Genre - ${movie.genre} --- Is Series - ${movie.isSeries}</h4>`

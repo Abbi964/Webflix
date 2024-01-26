@@ -1,5 +1,6 @@
 const Movie = require('../model/movie');
 const path = require('path')
+const uploadToS3 = require('../utility/uploadToS3');
 
 exports.getHomePage = (req,res)=>{
     res.sendFile(path.join(__dirname,'..','views','homepage.html'))
@@ -131,6 +132,35 @@ exports.findAllMovies = async(req,res)=>{
     catch(err){
         console.log(err);
         res.status(500).json({msg : "Something went wrong"})
+    }
+}
+
+exports.uploadMovie = async(req,res)=>{
+    try{
+        const user = req.user
+        // first checking user is admin or not
+        if (user.isAdmin){
+            let localfile = req.file;      // due to multer
+            let filename = localfile.originalname
+
+            // uploading to s3
+            let uploaded = await uploadToS3(localfile,filename);
+            
+            if(uploaded == true){
+                // // modifying fileurl to make it a cloudFront url and then sending back to frontend
+                let newurl = process.env.AWS_CLOUDFRONT_DOMAIN
+                newurl += filename;
+                console.log(newurl)
+                res.json({fileurl : newurl,filename : filename, success : true})
+            }
+            else{
+                res.json({msg : "something went wrong",success : false})
+            }
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.json({msg : 'Something went wrong', success : false});
     }
 }
 

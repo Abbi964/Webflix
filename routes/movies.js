@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const movieController = require('../controller/movie');
-const verifyToken = require('../utility/verifyToken')
+const verifyToken = require('../utility/verifyToken');
+const multerLocalUpload = require('../utility/multerLocalUpload');
 
 // Get Home page
 router.get('/home',movieController.getHomePage);
@@ -20,7 +21,9 @@ router.get('/find/:id',verifyToken,movieController.findMovie);
 router.get('/random',verifyToken,movieController.findRandomMovies);
 // Get all movies
 router.get('/findAll',verifyToken,movieController.findAllMovies);
+// upload Movie
+router.post('/upload',verifyToken,multerLocalUpload.single('file'),movieController.uploadMovie)
 // view movie
-router.get('/view/:id',movieController.getViewMoviePage)
+router.get('/view/:id',movieController.getViewMoviePage);
 
 module.exports = router;

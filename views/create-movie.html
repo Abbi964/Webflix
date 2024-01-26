@@ -8,7 +8,7 @@
     <title>WebFlix-Admin</title>
 </head>
 <body>
-    <form class="form-class" action="">
+    <form class="form-class" action="" enctype="multipart/form-data">
         <div>
             <label for="title">Title</label><br>
             <input class="form-input" id="title" type="text" placeholder="Title">
@@ -23,7 +23,7 @@
         </div>
         <div>    
             <label for="video">Video</label><br>
-            <input class="form-input" id="video" type="text" placeholder="Video">
+            <input class="form-input" id="video" type="file" accept="video/mp4" placeholder="Video">
         </div>
         <div>    
             <label for="year">Year</label><br>
@@ -72,36 +72,56 @@
         submitBtn.addEventListener('click',async(e)=>{
             e.preventDefault()
             try{
-                let obj = {
-                    title : title.value,
-                    desc : desc.value,
-                    img : img.value,
-                    video : video.value,
-                    year : year.value,
-                    banner : banner.value,
-                    limit : limit.value,
-                    genre : genre.value,
-                    isSeries : isSeries.checked ? true : false
-                }
-
-                let token = localStorage.getItem('token')
-                let response = await axios.post('http://localhost:3000/movie/create',obj,{headers:  {Authorization : token}})
-
-                title.value = '';
-                desc.value = '';
-                img.value = '';
-                video.value = '';
-                year.value = '';
-                limit.value = '';
-                banner.value = '';
-                if (response.data.movie){
-                    console.log(response.data.movie)
-
+                // ------------   first uploading video to server and getting url----------//
+                let videoFile = video.files[0];
+                if (!videoFile){
+                    alert('No video selected')
                 }
                 else{
-                    console.log(response.data.msg)
-                }
+                    let token = localStorage.getItem('token')
+                    // Using a built in JS object (FormData) to handle files
+                    let formData = new FormData();
+                    // appending file to form data
+                    formData.append('file',videoFile)
+                    // making a post request to upload
+                    let result = await axios.post('http://localhost:3000/movie/upload',formData,  {headers: { 'Authorization': token }})
 
+                    if(result.data.success){
+                        //------------ now posting the movie obejct to database---------------//
+                        let obj = {
+                            title : title.value,
+                            desc : desc.value,
+                            img : img.value,
+                            video : result.data.fileurl,
+                            year : year.value,
+                            banner : banner.value,
+                            limit : limit.value,
+                            genre : genre.value,
+                            isSeries : isSeries.checked ? true : false
+                        }
+        
+                        let response = await axios.post('http://localhost:3000/movie/create',obj,{headers:  {Authorization : token}})
+        
+                        title.value = '';
+                        desc.value = '';
+                        img.value = '';
+                        video.value = '';
+                        year.value = '';
+                        limit.value = '';
+                        banner.value = '';
+                        if (response.data.movie){
+                            console.log(response.data.movie)
+        
+                        }
+                        else{
+                            console.log(response.data.msg)
+                        }
+
+                    }
+                    else{
+                        alert(result.data.msg)
+                    }
+                }
             }
             catch(err){
                 console.log(err)
